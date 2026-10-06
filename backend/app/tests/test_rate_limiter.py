@@ -90,6 +90,19 @@ def test_gateway_request_allowed_within_limit(client, db_session):
     assert response.status_code == 200
 
 
+def test_gateway_request_fails_open_when_redis_check_fails(client, monkeypatch):
+    headers = register_and_login(client, email="redis-error@example.com")
+
+    def fail_check(self, key, capacity, refill_rate, cost=1.0):
+        raise ConnectionError("Redis unavailable")
+
+    monkeypatch.setattr(TokenBucketRateLimiter, "check", fail_check)
+
+    response = client.post("/gateway/request", json={"target_service": "echo"}, headers=headers)
+
+    assert response.status_code == 200
+
+
 def test_gateway_request_returns_429_when_exhausted(client, db_session):
     from app.models.rate_limit import RateLimit
     from app.models.user import User

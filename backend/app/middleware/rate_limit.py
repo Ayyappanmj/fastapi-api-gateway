@@ -18,6 +18,9 @@ from app.services.rate_limit_config import resolve_bucket_config
 from app.services.rate_limiter import TokenBucketRateLimiter
 from app.services.redis_client import get_redis
 from app.utils.dependencies import get_current_user
+from app.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def rate_limited(
@@ -35,7 +38,11 @@ def rate_limited(
 
     bucket_key = f"rate_limit:{current_user.id}:{endpoint}"
     limiter = TokenBucketRateLimiter(redis_client)
-    result = limiter.check(bucket_key, capacity, refill_rate)
+    try:
+        result = limiter.check(bucket_key, capacity, refill_rate)
+    except Exception:
+        logger.exception("Redis rate-limit check failed for %s; allowing request", endpoint)
+        return current_user
 
     if not result.allowed:
         ip_address = request.client.host if request.client else "unknown"
