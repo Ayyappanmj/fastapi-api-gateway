@@ -1,0 +1,73 @@
+<svg width="1280" height="320" viewBox="0 0 1280 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="100%" stop-color="#101a2e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="320" fill="url(#bg)"/>
+
+  <!-- network / routing motif, right side -->
+  <g stroke="#1f2a44" stroke-width="1.5" fill="none">
+    <line x1="820" y1="90" x2="930" y2="60"/>
+    <line x1="820" y1="90" x2="930" y2="140"/>
+    <line x1="930" y1="60" x2="1040" y2="90"/>
+    <line x1="930" y1="140" x2="1040" y2="90"/>
+    <line x1="1040" y1="90" x2="1150" y2="60"/>
+    <line x1="1040" y1="90" x2="1150" y2="150"/>
+    <line x1="930" y1="140" x2="1020" y2="220"/>
+    <line x1="820" y1="90" x2="760" y2="180"/>
+    <line x1="760" y1="180" x2="880" y2="250"/>
+    <line x1="1020" y1="220" x2="880" y2="250"/>
+  </g>
+  <g fill="#3dd6c8">
+    <circle cx="820" cy="90" r="5"/>
+    <circle cx="1040" cy="90" r="6"/>
+    <circle cx="1150" cy="150" r="4"/>
+  </g>
+  <g fill="#1f2a44">
+    <circle cx="930" cy="60" r="4"/>
+    <circle cx="930" cy="140" r="4"/>
+    <circle cx="1150" cy="60" r="4"/>
+    <circle cx="1020" cy="220" r="4"/>
+    <circle cx="760" cy="180" r="4"/>
+    <circle cx="880" cy="250" r="4"/>
+  </g>
+
+  <!-- wordmark -->
+  <g>
+    <rect x="80" y="108" width="34" height="34" rx="8" fill="none" stroke="#3dd6c8" stroke-width="2.5"/>
+    <circle cx="97" cy="125" r="4" fill="#3dd6c8"/>
+    <line x1="90" y1="118" x2="104" y2="132" stroke="#3dd6c8" stroke-width="2"/>
+    <line x1="104" y1="118" x2="90" y2="132" stroke="#3dd6c8" stroke-width="2"/>
+  </g>
+
+  <text x="130" y="135" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#e6eaf2">
+    API Gateway &amp; Rate Limiting Platform
+  </text>
+  <text x="80" y="178" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#8793ad">
+    FastAPI · PostgreSQL · Redis token-bucket rate limiting · React/TypeScript dashboard
+  </text>
+
+  <!-- tech pills -->
+  <g font-family="Consolas, 'Courier New', monospace" font-size="13" fill="#8793ad">
+    <rect x="80" y="210" width="88" height="28" rx="4" fill="none" stroke="#1f2a44"/>
+    <text x="96" y="228">FastAPI</text>
+
+    <rect x="178" y="210" width="106" height="28" rx="4" fill="none" stroke="#1f2a44"/>
+    <text x="194" y="228">PostgreSQL</text>
+
+    <rect x="294" y="210" width="76" height="28" rx="4" fill="none" stroke="#1f2a44"/>
+    <text x="310" y="228">Redis</text>
+
+    <rect x="380" y="210" width="68" height="28" rx="4" fill="none" stroke="#1f2a44"/>
+    <text x="396" y="228">React</text>
+
+    <rect x="458" y="210" width="112" height="28" rx="4" fill="none" stroke="#1f2a44"/>
+    <text x="474" y="228">TypeScript</text>
+
+    <rect x="580" y="210" width="76" height="28" rx="4" fill="none" stroke="#1f2a44"/>
+    <text x="596" y="228">Docker</text>
+  </g>
+</svg>

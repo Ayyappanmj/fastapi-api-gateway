@@ -1,0 +1,4 @@
+# Dev/CI-only tools. Install alongside requirements.txt for local
+# development or CI; the Docker image only installs requirements.txt.
+-r requirements.txt
+ruff==0.6.9

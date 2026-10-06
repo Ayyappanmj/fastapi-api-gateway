@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens. Dark is the default (this is an ops/monitoring console —
+  the convention engineers expect, think Grafana/Datadog), light is an
+  explicit opt-in toggled by adding .light to <html>.
+
+  Colors needing Tailwind's opacity-modifier syntax (bg-accent/10, etc.)
+  also get an "-rgb" variant: Tailwind applies alpha via
+  rgb(var(--x-rgb) / <alpha-value>), which only works against a
+  space-separated RGB triplet, not an opaque hex value. Plain hex vars
+  stay for everywhere else (incl. recharts' inline style props, which
+  need a real CSS color string, not a bare triplet).
+*/
+:root,
+html.dark {
+  --color-base: #0b1220;
+  --color-surface: #121b2e;
+  --color-surface-raised: #17223a;
+  --color-border: #1f2a44;
+  --color-text-primary: #e6eaf2;
+  --color-text-secondary: #8793ad;
+  --color-accent: #3dd6c8;
+  --color-accent-strong: #2bb8ab;
+  --color-warning: #f2b84b;
+  --color-danger: #f2555a;
+  --color-success: #5fd068;
+
+  --color-accent-rgb: 61 214 200;
+  --color-warning-rgb: 242 184 75;
+  --color-danger-rgb: 242 85 90;
+  --color-success-rgb: 95 208 104;
+}
+
+html.light {
+  --color-base: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #e2e6ed;
+  --color-text-primary: #16202e;
+  --color-text-secondary: #5b6679;
+  --color-accent: #0ea99d;
+  --color-accent-strong: #0b897f;
+  --color-warning: #b9780a;
+  --color-danger: #d23c42;
+  --color-success: #2f9e44;
+
+  --color-accent-rgb: 14 169 157;
+  --color-warning-rgb: 185 120 10;
+  --color-danger-rgb: 210 60 66;
+  --color-success-rgb: 47 158 68;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-text-primary);
+}
+
+/* Tabular numerals everywhere numbers appear in data, not just .font-mono text */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-base);
+}

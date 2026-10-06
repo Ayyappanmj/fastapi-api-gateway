@@ -1,0 +1,95 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" fill="#0b1220"/>
+
+  <!-- sidebar -->
+  <rect x="0" y="0" width="220" height="760" fill="#121b2e" stroke="#1f2a44" stroke-width="1"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <circle cx="36" cy="40" r="4" fill="#3dd6c8"/>
+    <text x="50" y="45" font-size="15" font-weight="700" fill="#e6eaf2">Gateway Console</text>
+
+    <rect x="16" y="84" width="188" height="34" rx="5" fill="#3dd6c8" fill-opacity="0.12"/>
+    <circle cx="34" cy="101" r="3" fill="#3dd6c8"/>
+    <text x="48" y="106" font-size="13" fill="#3dd6c8">Dashboard</text>
+
+    <circle cx="34" cy="143" r="3" fill="#8793ad"/>
+    <text x="48" y="148" font-size="13" fill="#8793ad">Analytics</text>
+
+    <circle cx="34" cy="185" r="3" fill="#8793ad"/>
+    <text x="48" y="190" font-size="13" fill="#8793ad">Users</text>
+
+    <circle cx="34" cy="227" r="3" fill="#8793ad"/>
+    <text x="48" y="232" font-size="13" fill="#8793ad">Logs</text>
+
+    <circle cx="34" cy="269" r="3" fill="#8793ad"/>
+    <text x="48" y="274" font-size="13" fill="#8793ad">Settings</text>
+  </g>
+
+  <!-- top bar -->
+  <rect x="220" y="0" width="980" height="56" fill="#121b2e" stroke="#1f2a44" stroke-width="1"/>
+  <circle cx="250" cy="28" r="3" fill="#5fd068"/>
+  <text x="260" y="33" font-family="Consolas, 'Courier New', monospace" font-size="12" fill="#5fd068">operational</text>
+  <text x="1080" y="33" font-family="Arial, sans-serif" font-size="13" fill="#8793ad" text-anchor="end">admin@company.com</text>
+
+  <!-- stat cards -->
+  <g font-family="Arial, Helvetica, sans-serif">
+    <!-- card 1 -->
+    <rect x="248" y="84" width="220" height="92" fill="#121b2e" stroke="#1f2a44"/>
+    <rect x="248" y="84" width="220" height="3" fill="#3dd6c8"/>
+    <text x="264" y="110" font-size="12" fill="#8793ad">Total requests</text>
+    <text x="264" y="145" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#e6eaf2">48,120</text>
+
+    <!-- card 2 -->
+    <rect x="484" y="84" width="220" height="92" fill="#121b2e" stroke="#1f2a44"/>
+    <rect x="484" y="84" width="220" height="3" fill="#5fd068"/>
+    <text x="500" y="110" font-size="12" fill="#8793ad">Successful</text>
+    <text x="500" y="145" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#e6eaf2">46,890</text>
+
+    <!-- card 3 -->
+    <rect x="720" y="84" width="220" height="92" fill="#121b2e" stroke="#1f2a44"/>
+    <rect x="720" y="84" width="220" height="3" fill="#f2b84b"/>
+    <text x="736" y="110" font-size="12" fill="#8793ad">Blocked</text>
+    <text x="736" y="145" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#e6eaf2">212</text>
+
+    <!-- card 4 -->
+    <rect x="956" y="84" width="220" height="92" fill="#121b2e" stroke="#1f2a44"/>
+    <rect x="956" y="84" width="220" height="3" fill="#f2555a"/>
+    <text x="972" y="110" font-size="12" fill="#8793ad">Error rate</text>
+    <text x="972" y="145" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#e6eaf2">1.8%</text>
+  </g>
+
+  <!-- chart panel -->
+  <rect x="248" y="200" width="928" height="260" fill="#121b2e" stroke="#1f2a44"/>
+  <text x="264" y="228" font-family="Arial, sans-serif" font-size="13" fill="#e6eaf2">Hourly traffic</text>
+  <polyline points="280,420 340,400 400,410 460,360 520,380 580,320 640,340 700,290 760,310 820,260 880,280 940,230 1000,250 1060,210 1120,225"
+            fill="none" stroke="#3dd6c8" stroke-width="2.5"/>
+  <g stroke="#1f2a44" stroke-width="1">
+    <line x1="264" y1="250" x2="1160" y2="250"/>
+    <line x1="264" y1="310" x2="1160" y2="310"/>
+    <line x1="264" y1="370" x2="1160" y2="370"/>
+    <line x1="264" y1="430" x2="1160" y2="430"/>
+  </g>
+
+  <!-- table panel -->
+  <rect x="248" y="480" width="928" height="248" fill="#121b2e" stroke="#1f2a44"/>
+  <text x="264" y="508" font-family="Arial, sans-serif" font-size="13" fill="#e6eaf2">Top endpoints</text>
+  <g font-family="Consolas, 'Courier New', monospace" font-size="12" fill="#8793ad">
+    <text x="264" y="540">POST /gateway/request</text>
+    <text x="1100" y="540" text-anchor="end" fill="#e6eaf2">31,204</text>
+    <line x1="264" y1="552" x2="1160" y2="552" stroke="#1f2a44"/>
+
+    <text x="264" y="576">GET /gateway/status</text>
+    <text x="1100" y="576" text-anchor="end" fill="#e6eaf2">9,845</text>
+    <line x1="264" y1="588" x2="1160" y2="588" stroke="#1f2a44"/>
+
+    <text x="264" y="612">GET /analytics/overview</text>
+    <text x="1100" y="612" text-anchor="end" fill="#e6eaf2">4,120</text>
+    <line x1="264" y1="624" x2="1160" y2="624" stroke="#1f2a44"/>
+
+    <text x="264" y="648">POST /auth/login</text>
+    <text x="1100" y="648" text-anchor="end" fill="#e6eaf2">2,951</text>
+  </g>
+
+  <text x="600" y="755" font-family="Arial, sans-serif" font-size="11" fill="#5b6679" text-anchor="middle">
+    Design mockup — illustrative, not a captured screenshot
+  </text>
+</svg>

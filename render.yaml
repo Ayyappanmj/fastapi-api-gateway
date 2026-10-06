@@ -1,0 +1,48 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Deploying this file (via "New +" -> "Blueprint" in the Render dashboard,
+# pointed at this repo) creates the backend web service and its Postgres
+# database together, with DATABASE_URL wired automatically. Redis
+# (Upstash, external to Render) and CORS_ORIGINS still need to be filled
+# in by hand after first deploy — see docs/deployment.md for why.
+
+services:
+  - type: web
+    name: api-gateway-backend
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    # $PORT is injected by Render at runtime — don't hardcode 8000 here,
+    # unlike the Docker Compose setup which always uses 8000.
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: api-gateway-db
+          property: connectionString
+      - key: REDIS_URL
+        sync: false # set manually after creating the Upstash database
+      - key: JWT_SECRET_KEY
+        generateValue: true # Render generates a random secret for you
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: DEFAULT_RATE_LIMIT_TOKENS
+        value: "100"
+      - key: DEFAULT_RATE_LIMIT_REFILL_PER_SEC
+        value: "1.0"
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        sync: false # set manually once the Vercel frontend URL is known
+
+databases:
+  - name: api-gateway-db
+    plan: free
+    databaseName: gateway_db
+    user: gateway_user
