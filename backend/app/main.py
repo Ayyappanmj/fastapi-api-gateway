@@ -27,10 +27,14 @@ app = FastAPI(
     description="A scalable API gateway with JWT auth, Redis-backed rate limiting, and analytics.",
 )
 
-# Order matters: CORS outermost, then request logging/timing.
+# Request logging wraps CORS; it passes OPTIONS through without logging.
+cors_origins = [
+    *settings.cors_origin_list,
+    "https://api-gateway-platform.vercel.app",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origin_list,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

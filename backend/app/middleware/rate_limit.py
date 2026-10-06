@@ -7,7 +7,7 @@ get_current_user gets authentication AND rate limiting for free. On
 admin dashboard (Phase 8) can show blocked-request counts without
 re-deriving them from Redis.
 """
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, HTTPException, Request, status  # type: ignore[import-not-found]
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
