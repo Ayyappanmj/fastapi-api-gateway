@@ -1,18 +1,19 @@
-"""
-sessions table.
+from __future__ import annotations
 
-One row per issued refresh token. Storing a hash (not the raw token)
-lets us revoke a single session (logout on one device) or all of a
-user's sessions, and lets /auth/refresh check the token is still
-valid and unrevoked without trusting the JWT payload alone.
-"""
+# sessions table. One row per issued refresh token. Storing a hash lets
+# us revoke one session or all of a user's sessions, and lets
+# /auth/refresh verify that a token is valid and unrevoked.
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class UserSession(Base):

@@ -8,6 +8,7 @@ exclude = ["alembic/versions"]
 select = ["E", "F", "I", "B"]
 ignore = [
     "E501",  # line length is handled by the formatter/line-length setting above
+    "B008",  # FastAPI uses Depends(...) and Query(...) in function defaults
 ]
 
 [lint.isort]

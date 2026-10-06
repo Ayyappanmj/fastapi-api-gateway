@@ -8,8 +8,6 @@ from datetime import datetime, timedelta, timezone
 import pytest
 from sqlalchemy.exc import IntegrityError
 
-pytestmark = pytest.mark.integration
-
 from app.models import (
     APIKey,
     BlockedRequest,
@@ -20,6 +18,8 @@ from app.models import (
     UserRole,
     UserSession,
 )
+
+pytestmark = pytest.mark.integration
 
 
 def make_user(db_session, email="jane@example.com", role=UserRole.USER) -> User:

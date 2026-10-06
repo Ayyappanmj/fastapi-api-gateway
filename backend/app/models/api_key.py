@@ -1,17 +1,19 @@
-"""
-api_keys table.
+from __future__ import annotations
 
-Lets a user call the gateway programmatically (as an alternative to a
-JWT access token). Only the hash of the key is stored — the raw key
-is shown to the user once, at creation time, in the API response.
-"""
+# api_keys table. Lets a user call the gateway programmatically as an
+# alternative to a JWT access token. Only the key hash is stored; the raw
+# key is shown once, at creation time, in the API response.
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class APIKey(Base):

@@ -1,19 +1,22 @@
-"""
-users table.
+from __future__ import annotations
 
-Stores account credentials and role. Passwords are never stored in
-plaintext — only the bcrypt hash (see app/services/auth_service.py
-in Phase 4). role drives the Admin/User RBAC checks in route
-dependencies.
-"""
+# users table. Stores account credentials and role. Passwords are never
+# stored in plaintext; only the bcrypt hash is persisted. Role drives the
+# Admin/User RBAC checks in route dependencies.
 import enum
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, Enum, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
+
+if TYPE_CHECKING:
+    from app.models.api_key import APIKey
+    from app.models.rate_limit import RateLimit
+    from app.models.session import UserSession
 
 
 class UserRole(str, enum.Enum):

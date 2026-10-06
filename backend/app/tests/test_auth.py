@@ -2,8 +2,8 @@
 Phase 4 tests: registration, login, password hashing, protected routes,
 refresh-token rotation, and role-based access control.
 """
-from datetime import datetime, timedelta, timezone
 import time
+from datetime import datetime, timedelta, timezone
 
 import pytest
 

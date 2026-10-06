@@ -112,9 +112,9 @@ def test_gateway_request_returns_429_when_exhausted(client, db_session):
 
 def test_development_bypass_skips_rate_limit(client, db_session, monkeypatch):
     from app.config import Settings
+    from app.middleware import rate_limit as rate_limit_module
     from app.models.rate_limit import RateLimit
     from app.models.user import User
-    from app.middleware import rate_limit as rate_limit_module
 
     headers = register_and_login(client)
     user = db_session.query(User).filter(User.email == "ratelimit@example.com").first()

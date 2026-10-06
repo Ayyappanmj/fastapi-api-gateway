@@ -6,6 +6,7 @@ never touches os.environ directly. This keeps configuration testable
 and makes it obvious where to look when adding a new setting.
 """
 from functools import lru_cache
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 

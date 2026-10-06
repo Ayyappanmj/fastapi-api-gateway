@@ -7,12 +7,12 @@ can diff against every table.
 """
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import engine_from_config, pool
 
+from alembic import context
+from app import models  # noqa: F401 - registers all models on Base.metadata
 from app.config import get_settings
 from app.database.base import Base
-from app import models  # noqa: F401 - registers all models on Base.metadata
 
 config = context.config
 if config.config_file_name is not None:

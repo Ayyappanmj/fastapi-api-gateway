@@ -1,19 +1,19 @@
-"""
-rate_limits table.
+from __future__ import annotations
 
-Stores the token-bucket configuration per (user, endpoint) pair.
-NULL endpoint = the user's default limit, applied to any route
-without its own override. The actual live token counts live in
-Redis (Phase 6) for speed; this table is the durable source of
-truth the limiter reads to (re)configure buckets.
-"""
+# rate_limits table. Stores the token-bucket configuration per
+# (user, endpoint) pair. NULL endpoint is the user's default limit. Live
+# token counts live in Redis; this table is the durable source of truth.
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class RateLimit(Base):
