@@ -21,17 +21,18 @@ from app.utils.logger import get_logger
 settings = get_settings()
 logger = get_logger(__name__)
 
+cors_origins = [
+    *settings.cors_origin_list,
+    "https://fastapi-gateway-frontend.onrender.com",
+    "http://localhost:3000",
+]
+
 app = FastAPI(
     title="API Gateway & Rate Limiting Platform",
     version="0.1.0",
     description="A scalable API gateway with JWT auth, Redis-backed rate limiting, and analytics.",
 )
 
-# Request logging wraps CORS; it passes OPTIONS through without logging.
-cors_origins = [
-    *settings.cors_origin_list,
-    "https://api-gateway-platform.vercel.app",
-]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
@@ -39,6 +40,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Request logging wraps CORS and passes OPTIONS through without logging;
+# CORS answers preflight before route dependencies such as rate_limited run.
 app.add_middleware(RequestLoggingMiddleware)
 
 register_error_handlers(app)
