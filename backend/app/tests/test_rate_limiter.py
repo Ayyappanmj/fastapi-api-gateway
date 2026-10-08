@@ -3,8 +3,53 @@ Phase 6 tests: the token bucket algorithm itself (unit-level, against
 FakeRedis), and the full rate-limited /gateway/request flow
 (integration-level, through the FastAPI TestClient).
 """
+from starlette.requests import Request
+
+from app.middleware.rate_limit import get_client_ip
 from app.models.blocked_request import BlockedRequest
 from app.services.rate_limiter import TokenBucketRateLimiter
+from app.tests.fake_redis import FakeRedis
+
+
+def make_request(headers=None, client=("127.0.0.1", 1234)):
+    return Request(
+        {
+            "type": "http",
+            "http_version": "1.1",
+            "method": "GET",
+            "scheme": "http",
+            "path": "/",
+            "raw_path": b"/",
+            "query_string": b"",
+            "headers": headers or [],
+            "client": client,
+            "server": ("testserver", 80),
+        }
+    )
+
+
+def test_get_client_ip_prefers_first_forwarded_address():
+    request = make_request(headers=[(b"x-forwarded-for", b"203.0.113.5, 10.0.0.1")])
+
+    assert get_client_ip(request) == "203.0.113.5"
+
+
+def test_get_client_ip_falls_back_to_socket_address():
+    assert get_client_ip(make_request()) == "127.0.0.1"
+    assert get_client_ip(make_request(client=None)) == "127.0.0.1"
+
+
+def test_fixed_window_counter_expires_after_window(monkeypatch):
+    import app.tests.fake_redis as fake_redis_module
+
+    current_time = {"now": 1000.0}
+    monkeypatch.setattr(fake_redis_module.time, "time", lambda: current_time["now"])
+    client = FakeRedis()
+
+    assert client.eval("fixed-window", 1, "counter", 60) == 1
+    assert client.eval("fixed-window", 1, "counter", 60) == 2
+    current_time["now"] += 60
+    assert client.eval("fixed-window", 1, "counter", 60) == 1
 
 
 def register_and_login(client, email="ratelimit@example.com"):
@@ -101,6 +146,46 @@ def test_gateway_request_fails_open_when_redis_check_fails(client, monkeypatch):
     response = client.post("/gateway/request", json={"target_service": "echo"}, headers=headers)
 
     assert response.status_code == 200
+
+
+def test_ip_fixed_window_limiter_returns_429_after_five_requests(client):
+    headers = {
+        "X-Forwarded-For": "203.0.113.10",
+        "Origin": "https://fastapi-gateway-frontend.onrender.com",
+        **register_and_login(client, email="fixed-window@example.com"),
+    }
+    responses = [
+        client.post("/gateway/request", json={"target_service": "echo"}, headers=headers)
+        for _ in range(6)
+    ]
+
+    assert [response.status_code for response in responses] == [200, 200, 200, 200, 200, 429]
+    assert responses[-1].headers["retry-after"] == "60"
+    assert responses[-1].headers["access-control-allow-origin"] == "https://fastapi-gateway-frontend.onrender.com"
+
+
+def test_options_preflight_does_not_increment_ip_counter(client, fake_redis):
+    response = client.options(
+        "/gateway/request",
+        headers={
+            "Origin": "https://fastapi-gateway-frontend.onrender.com",
+            "Access-Control-Request-Method": "POST",
+            "X-Forwarded-For": "203.0.113.20",
+        },
+    )
+
+    assert response.status_code == 200
+    assert fake_redis._counters == {}
+
+
+def test_fixed_window_matches_prefixed_case_insensitive_paths(client, fake_redis):
+    response = client.post(
+        "/API/Login",
+        headers={"X-Forwarded-For": "203.0.113.30"},
+    )
+
+    assert response.status_code == 404
+    assert fake_redis._counters["rate_limit:/api/login:203.0.113.30"][0] == 1
 
 
 def test_gateway_request_returns_429_when_exhausted(client, db_session):

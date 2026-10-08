@@ -15,11 +15,28 @@ this hand-rolled version avoids adding a dependency just for CI.
 """
 
 
+import time
+
+
 class FakeRedis:
     def __init__(self):
         self._buckets: dict[str, dict[str, float]] = {}
+        self._counters: dict[str, tuple[int, float]] = {}
 
-    def eval(self, script, numkeys, key, capacity, refill_rate, now, cost):
+    def eval(self, script, numkeys, *args):
+        if len(args) == 2:
+            key, window_seconds = args
+            now = time.time()
+            count, expires_at = self._counters.get(key, (0, now + window_seconds))
+            if now >= expires_at:
+                count = 0
+            count += 1
+            if count == 1:
+                expires_at = now + window_seconds
+            self._counters[key] = (count, expires_at)
+            return count
+
+        key, capacity, refill_rate, now, cost = args
         capacity = float(capacity)
         refill_rate = float(refill_rate)
         now = float(now)
@@ -49,6 +66,7 @@ class FakeRedis:
 
     def flushall(self):
         self._buckets.clear()
+        self._counters.clear()
 
     def ping(self) -> bool:
         return True

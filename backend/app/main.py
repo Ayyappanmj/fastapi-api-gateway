@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.database.session import get_db
 from app.middleware.error_handler import register_error_handlers
+from app.middleware.rate_limit import RateLimitMiddleware
 from app.middleware.request_logger import RequestLoggingMiddleware
 from app.routes import admin, analytics, auth, gateway
 from app.services.redis_client import get_redis
@@ -33,6 +34,10 @@ app = FastAPI(
     description="A scalable API gateway with JWT auth, Redis-backed rate limiting, and analytics.",
 )
 
+# Starlette makes the last-added middleware outermost; register CORS last so
+# it handles preflights and attaches CORS headers to middleware responses.
+app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(RateLimitMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
@@ -40,9 +45,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Request logging wraps CORS and passes OPTIONS through without logging;
-# CORS answers preflight before route dependencies such as rate_limited run.
-app.add_middleware(RequestLoggingMiddleware)
 
 register_error_handlers(app)
 

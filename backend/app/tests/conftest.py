@@ -90,6 +90,7 @@ def client(db_engine, db_session, fake_redis, monkeypatch):
 
     app.dependency_overrides[get_db] = _override_get_db
     app.dependency_overrides[get_redis] = lambda: fake_redis
+    monkeypatch.setattr("app.services.redis_client.get_redis", lambda: fake_redis)
     try:
         yield TestClient(app)
     finally:
